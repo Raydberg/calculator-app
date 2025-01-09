@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { View, Text } from 'react-native'
 
 enum Operator {
     add = '+',
     subtract = '-',
-    multuply = 'x',
+    multiply = 'x',
     divide = '%'
 }
 
@@ -12,18 +11,26 @@ enum Operator {
 export const useCalculator = () => {
     const [formula, setFormula] = useState('')
     const [number, setNumber] = useState("0")
-    const [prevNumber, setpPrevNumber] = useState('0')
+    const [prevNumber, setPrevNumber] = useState('0')
     const lastOperation = useRef<Operator>();
 
     useEffect(() => {
-        //* Calcular resultado
-
-        setFormula(number)
-
+        if (lastOperation.current) {
+            const firstFormulaPart = formula.split(' ').at(0)
+            setFormula(`${firstFormulaPart}${lastOperation.current}${number}`)
+        } else {
+            setFormula(number)
+        }
     }, [number])
+    // useEffect(() => {
+    //     //* Calcular resultado
+
+    //     // setPrevNumber(number)
+
+    // }, [number])
     const clean = () => {
         setNumber('0')
-        setpPrevNumber('0')
+        setPrevNumber('0')
         setFormula('0')
         lastOperation.current = undefined;
     }
@@ -36,6 +43,46 @@ export const useCalculator = () => {
         setNumber('-' + number)
     }
 
+    const deleteLast = () => {
+        let currentSign = '';
+        let temporalNumber = number;
+        if (number.includes('-')) {
+            currentSign = '-'
+            temporalNumber = number.substring(1)
+        }
+        if (temporalNumber.length > 1) {
+            return setNumber(currentSign + temporalNumber.slice(0, -1))
+        }
+        setNumber('0')
+    }
+
+    const setLastNumber = () => {
+        if (number.endsWith('.')) {
+            setPrevNumber(number.slice(0, -1))
+        }
+        setPrevNumber(number)
+        setNumber('0')
+    }
+    const devideOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.divide;
+    }
+    const multiplyOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.multiply;
+    }
+    const subtractOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.subtract;
+    }
+    const addOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.add;
+    }
+
+    const calculateResult = () => {
+      
+    }
 
     const buildNumber = (numberString: string) => {
         console.log(numberString)
@@ -49,17 +96,14 @@ export const useCalculator = () => {
             if (numberString === "0" && number.includes('.')) {
                 return setNumber(number + numberString)
             }
-
             //*Evaluar si es diferente de cero , y no hay punto y es el primer numero
             if (numberString !== '0' && !number.includes('.')) {
                 return setNumber(numberString)
             }
-
             //* Evitar el 0000.0 
             if (numberString === '0' && !number.includes('.')) {
                 return;
             }
-
         }
         setNumber(number + numberString)
     }
@@ -74,7 +118,12 @@ export const useCalculator = () => {
         //Methods
         buildNumber,
         clean,
-        toggleSigs
+        toggleSigs,
+        deleteLast,
+        devideOperation,
+        multiplyOperation,
+        subtractOperation,
+        addOperation,
     }
 
 

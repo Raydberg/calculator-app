@@ -9,31 +9,36 @@ import { View } from 'react-native'
 
 
 const CalculatorApp = () => {
-    const { formula, buildNumber, clean, toggleSigs } = useCalculator()
+    const {
+        formula, prevNumber, buildNumber,
+        clean, toggleSigs, deleteLast,
+        devideOperation, multiplyOperation, subtractOperation,
+        addOperation
+    } = useCalculator()
     const itemsForButton = [
         [
             { label: 'C', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: clean },
             { label: '+/-', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: toggleSigs },
-            { label: 'del', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: () => console.log('del') },
-            { label: '%', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => console.log('%') },
+            { label: 'del', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: deleteLast },
+            { label: '%', color: Colors.orange, blackText: false, doubleSize: false, onPress: devideOperation },
         ],
         [
             { label: '7', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('7') },
             { label: '8', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('8') },
             { label: '9', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('9') },
-            { label: 'X', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => console.log('X') },
+            { label: 'X', color: Colors.orange, blackText: false, doubleSize: false, onPress: multiplyOperation },
         ],
         [
             { label: '4', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('4') },
             { label: '5', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('5') },
             { label: '6', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('6') },
-            { label: '-', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => console.log('-') },
+            { label: '-', color: Colors.orange, blackText: false, doubleSize: false, onPress: subtractOperation },
         ],
         [
             { label: '1', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('1') },
             { label: '2', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('2') },
             { label: '3', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('3') },
-            { label: '+', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => console.log('+') },
+            { label: '+', color: Colors.orange, blackText: false, doubleSize: false, onPress: addOperation },
         ],
         [
             { label: '0', color: Colors.darkGray, blackText: false, doubleSize: true, onPress: () => buildNumber('0') },
@@ -48,9 +53,15 @@ const CalculatorApp = () => {
                 <ThemeText variant='h1'>
                     {formula}
                 </ThemeText>
-                <ThemeText variant='h2'>
-                    20
-                </ThemeText>
+                {
+                    formula === prevNumber ? (
+                        <ThemeText variant='h2'></ThemeText>
+                    ) : (
+                        <ThemeText>
+                            {prevNumber}
+                        </ThemeText>
+                    )
+                }
             </View>
             {/* Filas de botones */}
 
