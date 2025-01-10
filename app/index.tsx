@@ -10,17 +10,30 @@ import { View } from 'react-native'
 
 const CalculatorApp = () => {
     const {
-        formula, prevNumber, buildNumber,
-        clean, toggleSigs, deleteLast,
-        devideOperation, multiplyOperation, subtractOperation,
-        addOperation
+             // Props
+      formula,
+      number,
+      prevNumber,
+  
+      // Methods
+      buildNumber,
+      clean,
+      toggleSign,
+      deleteLast,
+  
+      divideOperation,
+      multiplyOperation,
+      subtractOperation,
+      addOperation,
+      calculateSubResult,
+      calculateResult,
     } = useCalculator()
     const itemsForButton = [
         [
             { label: 'C', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: clean },
-            { label: '+/-', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: toggleSigs },
+            { label: '+/-', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: toggleSign },
             { label: 'del', color: Colors.lightGray, blackText: true, doubleSize: false, onPress: deleteLast },
-            { label: '%', color: Colors.orange, blackText: false, doubleSize: false, onPress: devideOperation },
+            { label: '%', color: Colors.orange, blackText: false, doubleSize: false, onPress:  divideOperation },
         ],
         [
             { label: '7', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('7') },
@@ -43,7 +56,7 @@ const CalculatorApp = () => {
         [
             { label: '0', color: Colors.darkGray, blackText: false, doubleSize: true, onPress: () => buildNumber('0') },
             { label: '.', color: Colors.darkGray, blackText: false, doubleSize: false, onPress: () => buildNumber('.') },
-            { label: '=', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => console.log('=') }
+            { label: '=', color: Colors.orange, blackText: false, doubleSize: false, onPress: () => calculateResult() }
         ],
     ]
 
@@ -55,10 +68,10 @@ const CalculatorApp = () => {
                 </ThemeText>
                 {
                     formula === prevNumber ? (
-                        <ThemeText variant='h2'></ThemeText>
+                        <ThemeText variant='h2'> </ThemeText>
                     ) : (
-                        <ThemeText>
-                            {prevNumber}
+                        <ThemeText variant='h2'>
+                            {formula}
                         </ThemeText>
                     )
                 }
